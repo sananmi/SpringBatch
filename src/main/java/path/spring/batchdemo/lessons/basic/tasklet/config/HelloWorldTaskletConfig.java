@@ -1,4 +1,4 @@
-package path.spring.batchdemo.config;
+package path.spring.batchdemo.lessons.basic.tasklet.config;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -11,12 +11,12 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import path.spring.batchdemo.listener.HelloWorldJobExecutionListener;
+import path.spring.batchdemo.lessons.basic.tasklet.listener.HelloWorldJobExecutionListener;
+import path.spring.batchdemo.lessons.basic.tasklet.listener.HelloWorldStepExecutionListener;
 
 @EnableBatchProcessing
 //@Configuration
-public class HelloWorldConfig {
+public class HelloWorldTaskletConfig {
 
     @Autowired
     private JobBuilderFactory jobs;
@@ -27,13 +27,19 @@ public class HelloWorldConfig {
     @Autowired
     private HelloWorldJobExecutionListener jobListener;
 
+    @Autowired
+    private HelloWorldStepExecutionListener stepExecutionListener;
+
+    //Simple tasklet step
     @Bean
     public Step step1(){
         return steps.get("step1")
+                .listener(stepExecutionListener)
                 .tasklet(helloWorldTasklet())
                 .build();
     }
 
+    //Simple tasklet method #RepeatStatus
     @Bean
     public Tasklet helloWorldTasklet() {
         return (new Tasklet() {
@@ -45,6 +51,7 @@ public class HelloWorldConfig {
         });
     }
 
+    //Job
     @Bean
     public Job helloWorldJob(){
         return jobs.get("helloWorldJob")

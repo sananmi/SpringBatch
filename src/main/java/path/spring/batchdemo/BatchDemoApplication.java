@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 import java.awt.*;
 
 @SpringBootApplication
-public class BatchDemoApplication {
+public class  BatchDemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BatchDemoApplication.class, args);
